@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/poarfrippe/AimTrainer/issues"
   },
-  "homepage": "https://github.com/poarfrippe/AimTrainer#readme"
+  "homepage": "https://github.com/poarfrippe/AimTrainer#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
