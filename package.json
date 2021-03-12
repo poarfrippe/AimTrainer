@@ -1,0 +1,23 @@
+{
+  "name": "aimtrainer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node Server/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poarfrippe/AimTrainer.git"
+  },
+  "keywords": [
+    "AimTrainer"
+  ],
+  "author": "Sparber, Penn, Gruber",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/poarfrippe/AimTrainer/issues"
+  },
+  "homepage": "https://github.com/poarfrippe/AimTrainer#readme"
+}
