@@ -5,6 +5,7 @@ body {
 
 canvas { 
     display: block;
+    background-color: #616161
 }
 
 #crosshair {
@@ -15,4 +16,5 @@ canvas {
     position: fixed;
     align-items: center;
     justify-content: center;
+    color: aqua;
 }

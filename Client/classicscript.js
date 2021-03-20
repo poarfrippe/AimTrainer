@@ -70,6 +70,8 @@ function handleMouseMove(event) {
         anglex += event.movementX / 1000
         angley += event.movementY / 1000
 
+        //console.log(angley)
+
         //soll Eine Sphere um (0,0,0) darstellen wo je nach x winkel und y winkel der x, y, und z punkt ausgerechnt wird wo die kamera hinsehen soll!!!!
         camx = getgegenkathete(anglex)
         camy = getgegenkathete(angley)
@@ -94,6 +96,7 @@ function getankathete(angle, hyplenght = 1) {
 
 function drawroom(width, height, depth) {
 
+///*
     //rechts
     for (let i = -5; i < 6; ++i) {
         let points = [];
@@ -150,9 +153,19 @@ function drawroom(width, height, depth) {
         points.push( new THREE.Vector3( i*width/10, -height/2, -depth ) );
         drawline(points)
     }
+//*/
 
-
-    let material = new THREE.MeshToonMaterial({color: "#4B6E6B"})
+    let textureloader = new THREE.TextureLoader()
+    let walltexture = new textureloader.load("textures/rock/Rock_04_DIFF.png")
+    let wallbumpMap = new textureloader.load("textures/rock/Rock_04_DISP.png")
+    let wallnormalMap = new textureloader.load("textures/rock/Rock_04_NRM.png")
+    let material = new THREE.MeshPhongMaterial({
+        //color: 0x7dc0ff,
+        color: 0x616161,
+        map: walltexture,
+        bumpMap: wallbumpMap,
+        normalMap: wallnormalMap
+    })
     let geometry
     let mesh
 
@@ -207,7 +220,10 @@ function drawroom(width, height, depth) {
 }
 
 function drawline(points) {
-    const material = new THREE.LineBasicMaterial( { color: 0x7D00FF } );
+    const material = new THREE.LineBasicMaterial( { 
+        //color: 0x7D00FF
+        color: 0x000000
+    } );
     const geometry = new THREE.BufferGeometry().setFromPoints( points );
     const line = new THREE.Line( geometry, material );
     scene.add( line );
@@ -216,20 +232,18 @@ function drawline(points) {
 function inittargets(howmanny) {
 
     let geometry = new THREE.SphereGeometry(1, 100, 100)
-    let material = new THREE.MeshLambertMaterial({color: "#E72D31"})
+    let material = new THREE.MeshLambertMaterial({color: "#FFFFFF", map: new THREE.TextureLoader().load("textures/joni.png")})
 
     for (let i = 0; i < howmanny; ++i) {
         let mesh = new THREE.Mesh(geometry, material)
         mesh.position.x = ((Math.random() - 0.5) * 10000) % roomwidth/2;
         mesh.position.y = ((Math.random() - 0.5) * 10000) % roomheight/2;
         mesh.position.z = ((Math.random()) * -10000) % roomdepth;
-        //console.log("pos1: "+mesh.position.z)
         if (mesh.position.z > -15) {
             mesh.position.z -= 15
         }
-        //console.log("pos2: "+mesh.position.z)
+        //mesh.receiveShadow = true
         scene.add(mesh)
-        //console.log(Math.random())
     }
 
 }
