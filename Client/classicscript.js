@@ -31,7 +31,7 @@ window.onload = function() {
     document.body.appendChild(renderer.domElement)
     
     drawroom(roomwidth, roomheight, roomdepth)
-    inittargets(15)
+    inittargets(1)
     addlight()
     
     document.body.onclick = onMouseClick
@@ -42,8 +42,9 @@ window.onload = function() {
 }
 
 let render = function() {
-        requestAnimationFrame(render)
-        renderer.render(scene, camera)
+
+    requestAnimationFrame(render)
+    renderer.render(scene, camera)
 }
 
 function onbodyclick(event) {
@@ -55,28 +56,39 @@ function handleMouseMove(event) {
 
     if(document.pointerLockElement == document.body) {
         
-        if(anglex > wholeround){
-            anglex = 0
-        } else if(anglex < 0) {
-            anglex = wholeround
+        let obweiter = true
+        if (camy > 0.98 && camz < 0.02 && event.movementY >= 0){
+            obweiter = false
+        } else {
+            obweiter = true
         }
 
-        if(angley > wholeround){
-            angley = 0
-        } else if(angley < 0) {
-            angley = wholeround
+        //console.log("obweiter: " + obweiter)
+
+        if (obweiter) {
+            if(anglex > wholeround){
+                anglex = 0
+            } else if(anglex < 0) {
+                anglex = wholeround
+            }
+
+            if(angley > wholeround){
+                angley = 0
+            } else if(angley < 0) {
+                angley = wholeround
+            }
+
+            anglex += event.movementX / 1000
+            angley += event.movementY / 1000
+
+            //(console.log(event.movementY)
+            
+            //soll Eine Sphere um (0,0,0) darstellen wo je nach x winkel und y winkel der x, y, und z punkt ausgerechnt wird wo die kamera hinsehen soll!!!!
+            camx = getgegenkathete(anglex)
+            camy = getgegenkathete(angley)
+            let sepp = getankathete(angley)                 //ist dazu da dass z bei bewegungen entlang der y achse nicht gleich bleibt
+            camz = getgegenkathete(wholeround/4-anglex, sepp) 
         }
-
-        anglex += event.movementX / 1000
-        angley += event.movementY / 1000
-
-        //console.log(angley)
-
-        //soll Eine Sphere um (0,0,0) darstellen wo je nach x winkel und y winkel der x, y, und z punkt ausgerechnt wird wo die kamera hinsehen soll!!!!
-        camx = getgegenkathete(anglex)
-        camy = getgegenkathete(angley)
-        let sepp = getankathete(angley)                 //ist dazu da dass z bei bewegungen entlang der y achse nicht gleich bleibt
-        camz = getgegenkathete(wholeround/4-anglex, sepp)
         
     } else {
         //console.log('pointer net gelockt!');
@@ -96,7 +108,7 @@ function getankathete(angle, hyplenght = 1) {
 
 function drawroom(width, height, depth) {
 
-///*
+/*
     //rechts
     for (let i = -5; i < 6; ++i) {
         let points = [];
@@ -153,12 +165,12 @@ function drawroom(width, height, depth) {
         points.push( new THREE.Vector3( i*width/10, -height/2, -depth ) );
         drawline(points)
     }
-//*/
+*/
 
     let textureloader = new THREE.TextureLoader()
-    let walltexture = new textureloader.load("textures/rock/Rock_04_DIFF.png")
-    let wallbumpMap = new textureloader.load("textures/rock/Rock_04_DISP.png")
-    let wallnormalMap = new textureloader.load("textures/rock/Rock_04_NRM.png")
+    let walltexture = new textureloader.load("textures/Tiles084/Tiles084_1K_Color.jpg")
+    let wallbumpMap = new textureloader.load("textures/Tiles084/Tiles084_1K_AmbientOcclusion.jpg")
+    let wallnormalMap = new textureloader.load("textures/Tiles084/Tiles084_1K_Normal.jpg")
     let material = new THREE.MeshPhongMaterial({
         //color: 0x7dc0ff,
         color: 0x616161,
@@ -232,7 +244,10 @@ function drawline(points) {
 function inittargets(howmanny) {
 
     let geometry = new THREE.SphereGeometry(1, 100, 100)
-    let material = new THREE.MeshLambertMaterial({color: "#FFFFFF", map: new THREE.TextureLoader().load("textures/joni.png")})
+    let material = new THREE.MeshLambertMaterial({
+        color: "#FFFFFF",
+        map: new THREE.TextureLoader().load("textures/joni.png")
+    })
 
     for (let i = 0; i < howmanny; ++i) {
         let mesh = new THREE.Mesh(geometry, material)
@@ -261,11 +276,26 @@ function addlight() {
 function onMouseClick(event) {
 
     document.body.requestPointerLock()
-
     event.preventDefault();
 
-    console.log("x= " + camx)
-    console.log("y= " + camy)
+    let newcords = new THREE.Vector3(0, 0, 0)
+    for(let i = 0; i < scene.children.length; ++i) {
+        if(scene.children[i].type == "Mesh") {
+            if (scene.children[i].geometry.type == "SphereGeometry") {
+                newcords = getcordsontargethight(scene.children[i].position)
+                if ((newcords.x < scene.children[i].position.x+1 && newcords.x > scene.children[i].position.x-1) && 
+                    (newcords.y < scene.children[i].position.y+1 && newcords.y > scene.children[i].position.y-1)) {
+                        console.log("hit!!!")
+                        scene.remove(scene.children[i])
+                        //console.log(scene.children[i].position)
+                }
+            }
+        }
+    }
+    //console.log("seppl")
+    if (scene.children.length < 9) {
+        inittargets(1)
+    }
 
     //raycaster.setFromCamera(crosshair, camera);
     //let intersects = raycaster.intersectObjects(scene.children, true)
@@ -276,4 +306,11 @@ function onMouseClick(event) {
         intersects[i].object.material.color = {r: 0, g: 255, b: 0}
     }
     */
+}
+
+function getcordsontargethight(target) {
+    let newx = (camx/camz) * -target.z
+    let newy = (camy/camz) * target.z
+
+    return new THREE.Vector3(newx, newy, target.z)
 }
