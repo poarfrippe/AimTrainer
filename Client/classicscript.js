@@ -2,12 +2,7 @@ import * as THREE from '../node_modules/three/src/Three.js';
 
 const renderer = new THREE.WebGLRenderer({antialias: true})
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 500);
-
-const crosshairx = window.innerWidth/2
-const crosshairy = window.innerHeight/2
-const crosshair = new THREE.Vector2(crosshairx, crosshairy);
-const raycaster = new THREE.Raycaster();
+const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 500);
 
 let camx = 0
 let camy = 0
@@ -22,6 +17,21 @@ const roomhintercam = 20
 
 const wholeround = 2*Math.PI
 
+//sensi zwischen 0 und 2!!
+const sensiy = 1.2
+const sensix = 1.2
+
+const numberNotTargetElements = 11
+
+let scoreMash
+let score = 0
+let timeMash
+let time = 10
+
+let currentDate
+let startsec = -1
+let currentsec
+
 window.onload = function() {
 
     camera.position.z = 0
@@ -31,6 +41,8 @@ window.onload = function() {
     document.body.appendChild(renderer.domElement)
     
     drawroom(roomwidth, roomheight, roomdepth)
+    settextscore("Score: " + score)
+    settime("" +time)
     inittargets(1)
     addlight()
     
@@ -43,18 +55,94 @@ window.onload = function() {
 
 let render = function() {
 
+    currentDate = new Date();
+    if (currentsec!=currentDate.getSeconds() && startsec > 0){
+        currentsec = currentDate.getSeconds()
+        --time
+        settime("" +time)
+
+        if (time == 0) {
+            sendScore()
+            startsec = -2
+            camera.lookAt(0, 0, -1)
+            document.exitPointerLock();
+        }
+    }
+
     requestAnimationFrame(render)
     renderer.render(scene, camera)
 }
 
-function onbodyclick(event) {
-    document.body.requestPointerLock()
-    console.log("hosch ofn body geckickt, ha?")
+function sendScore() {
+    console.log("iatz war zu senden an backend Score: " + score)
+}
+
+function settextscore(text) {
+
+    scene.remove(scoreMash)
+
+    let material = new THREE.MeshLambertMaterial({
+        color: "#FFFFFF"
+    })
+
+    let loader = new THREE.FontLoader();
+    loader.load( 'Helvetica.json', function ( font ) {
+        let textgeo = new THREE.TextGeometry(text, {
+            font: font,
+            size: 2,
+            height: 0.01,
+            curveSegments: 30,
+            bevelThickness: 0.1,
+			bevelSize: 0.1,
+			bevelEnabled: true
+        })
+
+        textgeo.computeBoundingBox();
+
+        scoreMash = new THREE.Mesh(textgeo, material)
+        scoreMash.position.z = -roomdepth
+        scoreMash.position.x = -roomwidth/2
+        scoreMash.position.y = roomheight/2 -2
+
+        scene.add(scoreMash)
+    })
+
+}
+
+function settime (time) {
+
+    scene.remove(timeMash)
+
+    let material = new THREE.MeshLambertMaterial({
+        color: "#FFFFFF",
+    })
+
+    let loader = new THREE.FontLoader();
+    loader.load( 'Helvetica.json', function ( font ) {
+        let textgeo = new THREE.TextGeometry(time, {
+            font: font,
+            size: 2,
+            height: 0.5,
+            curveSegments: 30,
+            bevelThickness: 0.1,
+			bevelSize: 0.1,
+			bevelEnabled: true
+        })
+
+        textgeo.computeBoundingBox();
+
+        timeMash = new THREE.Mesh(textgeo, material)
+        timeMash.position.z = -roomdepth
+        timeMash.position.x = roomwidth/2 -4
+        timeMash.position.y = roomheight/2 -2
+
+        scene.add(timeMash)
+    })
 }
 
 function handleMouseMove(event) {
 
-    if(document.pointerLockElement == document.body) {
+    if(document.pointerLockElement == document.body && startsec > 0) {
         
         let obweiter = true
         if (camy > 0.98 && camz < 0.02 && event.movementY >= 0){
@@ -78,8 +166,8 @@ function handleMouseMove(event) {
                 angley = wholeround
             }
 
-            anglex += event.movementX / 1000
-            angley += event.movementY / 1000
+            anglex += event.movementX / ((2 - sensix) * 1000)
+            angley += event.movementY / ((2 - sensiy) * 1000)
 
             //(console.log(event.movementY)
             
@@ -90,11 +178,10 @@ function handleMouseMove(event) {
             camz = getgegenkathete(wholeround/4-anglex, sepp) 
         }
         
+        camera.lookAt(camx, -camy, -camz)
     } else {
         //console.log('pointer net gelockt!');
     }
-
-    camera.lookAt(camx, -camy, -camz)
 
 }
 
@@ -168,9 +255,17 @@ function drawroom(width, height, depth) {
 */
 
     let textureloader = new THREE.TextureLoader()
+/*
     let walltexture = new textureloader.load("textures/Tiles084/Tiles084_1K_Color.jpg")
     let wallbumpMap = new textureloader.load("textures/Tiles084/Tiles084_1K_AmbientOcclusion.jpg")
     let wallnormalMap = new textureloader.load("textures/Tiles084/Tiles084_1K_Normal.jpg")
+*/
+  
+    let walltexture = new textureloader.load("Tiles084_1K_Color.jpg")
+    let wallbumpMap = new textureloader.load("Tiles084_1K_AmbientOcclusion.jpg")
+    let wallnormalMap = new textureloader.load("Tiles084_1K_Normal.jpg")
+
+
     let material = new THREE.MeshPhongMaterial({
         //color: 0x7dc0ff,
         color: 0x616161,
@@ -246,7 +341,9 @@ function inittargets(howmanny) {
     let geometry = new THREE.SphereGeometry(1, 100, 100)
     let material = new THREE.MeshLambertMaterial({
         color: "#FFFFFF",
-        map: new THREE.TextureLoader().load("textures/joni.png")
+        //map: new THREE.TextureLoader().load("textures/joni.png")
+        map: new THREE.TextureLoader().load("joni.png")
+        //map: new THREE.TextureLoader().load("theo.png")
     })
 
     for (let i = 0; i < howmanny; ++i) {
@@ -275,8 +372,15 @@ function addlight() {
 
 function onMouseClick(event) {
 
-    document.body.requestPointerLock()
+    if (startsec != -2) {
+        document.body.requestPointerLock()
+    }
+    
     event.preventDefault();
+
+    if (startsec == -1) {
+        starttimer(time)
+    }
 
     let newcords = new THREE.Vector3(0, 0, 0)
     for(let i = 0; i < scene.children.length; ++i) {
@@ -285,27 +389,20 @@ function onMouseClick(event) {
                 newcords = getcordsontargethight(scene.children[i].position)
                 if ((newcords.x < scene.children[i].position.x+1 && newcords.x > scene.children[i].position.x-1) && 
                     (newcords.y < scene.children[i].position.y+1 && newcords.y > scene.children[i].position.y-1)) {
-                        console.log("hit!!!")
-                        scene.remove(scene.children[i])
-                        //console.log(scene.children[i].position)
+                        if (startsec > 0) {
+                            ++score
+                            settextscore("Score: " + score)
+                            scene.remove(scene.children[i])
+                        }
                 }
             }
         }
     }
-    //console.log("seppl")
-    if (scene.children.length < 9) {
+
+    if (scene.children.length < numberNotTargetElements) {
         inittargets(1)
     }
 
-    //raycaster.setFromCamera(crosshair, camera);
-    //let intersects = raycaster.intersectObjects(scene.children, true)
-    //console.log(intersects[0].object)
-    //console.log(intersects)
-    /*
-    for (var i = 0; i < intersects.length; i++) {
-        intersects[i].object.material.color = {r: 0, g: 255, b: 0}
-    }
-    */
 }
 
 function getcordsontargethight(target) {
@@ -313,4 +410,11 @@ function getcordsontargethight(target) {
     let newy = (camy/camz) * target.z
 
     return new THREE.Vector3(newx, newy, target.z)
+}
+
+function starttimer(sekunden) {
+    currentDate = new Date();
+    startsec = currentDate.getSeconds()
+    currentsec = startsec
+    time = sekunden
 }
