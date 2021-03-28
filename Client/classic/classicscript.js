@@ -74,6 +74,19 @@ let render = function() {
 }
 
 function sendScore() {
+
+    //funkt no net
+    fetch("http://185.127.212.195:36187/classic", {
+        method: "post",
+        body: "hoila grüße"
+    }).then(function (response) {
+        return response.text()
+    }).then(function (text){
+        console.log("response vom post: " + text)
+    }).catch(function (error) {
+        console.log(error)
+    })
+
     console.log("iatz war zu senden an backend Score: " + score)
 }
 

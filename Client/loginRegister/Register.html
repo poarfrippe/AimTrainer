@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="script.js"></script>
 </head>
 <body>
     <div id="divlogin">
         <h2 id="welcome">WELCOME</h2>
-        <input type="text" name="username" id="username" class="loginInput" placeholder="Username">
+        <input type="text" name="email" id="email" class="loginInput" placeholder="E-Mail"><br>
+        <input type="text" name="username" id="username" class="loginInput" placeholder="Username"><br>
         <input type="password" name="pswdli" id="pswdli" class="loginInput" placeholder="Password">
         <p id="error"></p>
-        <input type="button" value="Login" id="btnlogin" onclick="logincheck();">
-        <p id="plogin">No Account, no problem! <a id="alogin" href="Register.html">Register</a></p>
+        <input type="button" value="Register" id="btnlogin" onclick="registercheck()">
     </div>
-
 </body>
 </html>
