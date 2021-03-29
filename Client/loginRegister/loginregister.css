@@ -1,0 +1,57 @@
+#divlogin {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    max-height: 500px;
+    margin: auto;
+    background-color: aliceblue;
+    border: 3px solid black;
+}
+
+#welcome {
+    text-decoration: none;
+    margin: 25px;
+    color: black;
+    text-align: center;
+}
+
+.loginInput {
+    align-self: center;
+    font-size: 18px;
+    font-display: bold;
+    width: 350px;
+    height: 75px;
+    margin: 20px;
+    color: darkgray;
+    font-family:'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+#btnlogin {
+    margin: 25px;
+    align-self: center;
+    min-width: 250px;
+    min-height: 50px;
+    background-color:white;
+}
+
+#alogin {
+    text-decoration: none;
+    color: black;
+}
+
+#plogin {
+    margin: 25px;
+    text-align: center;
+}
+
+.uplogin {
+    margin:auto;
+    font-size: 18px;
+}
+
+#error {
+    font-size: 18px;
+    text-align: center;
+    color: red;
+}

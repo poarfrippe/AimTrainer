@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const ip = "185.127.212.195"
+const ip = "localhost"
 const port = 36187
 
 //home
@@ -26,16 +26,16 @@ app.get("/login.jpg", (req, res) => {
 app.get("/login", (req, res) => {
     res.sendFile("Client/loginRegister/login.html", {root: "./"})
 })
-app.get("/login/style.css", (req, res) => {
-    res.sendFile("Client/loginRegister/style.css", {root: "./"})
+app.get("/login/loginregister.css", (req, res) => {
+    res.sendFile("Client/loginRegister/loginregister.css", {root: "./"})
 })
 
 //registere
 app.get("/register", (req, res) => {
     res.sendFile("Client/loginRegister/Register.html", {root: "./"})
 })
-app.get("/register/style.css", (req, res) => {
-    res.sendFile("Client/loginRegister/style.css", {root: "./"})
+app.get("/register/loginregister.css", (req, res) => {
+    res.sendFile("Client/loginRegister/loginregister.css", {root: "./"})
 })
 
 
