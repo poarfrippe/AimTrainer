@@ -1,4 +1,4 @@
-import * as THREE from '../node_modules/three/src/Three.js';
+import * as THREE from 'C:/Users/phili/Desktop/schuale/5BT/AimTrainer/node_modules/three/src/Three.js';
 
 const renderer = new THREE.WebGLRenderer({antialias: true})
 const scene = new THREE.Scene();
@@ -76,9 +76,10 @@ let render = function() {
 function sendScore() {
 
     //funkt no net
-    fetch("http://185.127.212.195:36187/classic", {
+    fetch("http://localhost:36187/classic", {
         method: "post",
-        body: "hoila grüße"
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({'score': score})
     }).then(function (response) {
         return response.text()
     }).then(function (text){

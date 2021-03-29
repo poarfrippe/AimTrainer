@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 
+let bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 const ip = "localhost"
 const port = 36187
 
@@ -28,6 +32,12 @@ app.get("/login", (req, res) => {
 })
 app.get("/login/loginregister.css", (req, res) => {
     res.sendFile("Client/loginRegister/loginregister.css", {root: "./"})
+})
+app.post("/login", (req, res) => {
+    //sparber schau, des geat oanfoch so und des iatz oanfoch of die datenbank... Blessed!!
+    console.log(req.body.username)
+    console.log(req.body.pswdli)
+    res.redirect("http://localhost:36187/", 302)
 })
 
 //registere
@@ -65,11 +75,10 @@ app.get("/classic/Helvetica.json", (req, res) => {
     res.sendFile("Client/fonts/Helvetica.json", {root: "./"})
 })
 app.post("/classic", (req, res) => {
-    //schau sparber do schick i dir iatz nor epes!!!!
+    //des no of DB
     console.log("hallo, bin im post iatz")
-    console.log(req.body)
+    console.log("score wos in die datenbank zu seppln muas: " + req.body.score)
     res.send("hoi, hon gekreag, jo!!!")
-    //geat ober net...
 })
 
 

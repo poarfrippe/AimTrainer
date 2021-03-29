@@ -10,13 +10,15 @@
 </head>
 <body>
     <div id="divlogin">
-        <h2 id="welcome">WELCOME</h2>
-        <input type="text" name="username" id="username" class="loginInput" placeholder="Username"><br>
-        <input type="password" name="pswdli" id="pswdli" class="loginInput" placeholder="Password">
-        <p id="error"></p>
-        <input type="button" value="Login" id="btnlogin" onclick="logincheck();">
-        <p id="plogin">No Account, no problem! <a id="alogin" href="http://localhost:36187/register/">Register</a></p>
+        <form action="http://localhost:36187/login" method="POST">
+            <h2 id="welcome">WELCOME</h2>
+            <input type="text" name="username" id="username" class="loginInput" placeholder="Username"><br>
+            <input type="password" name="pswdli" id="pswdli" class="loginInput" placeholder="Password">
+            <p id="error"></p>
+            <input id="btnlogin" type="submit">
+            <p id="plogin">No Account, no problem! <a id="alogin" href="http://localhost:36187/register/">Register</a></p>
+        </form>
+        
     </div>
-
 </body>
 </html>
