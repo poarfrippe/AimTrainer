@@ -10,12 +10,14 @@
 </head>
 <body>
     <div id="divlogin">
-        <h2 id="welcome">WELCOME</h2>
-        <input type="text" name="email" id="email" class="loginInput" placeholder="E-Mail"><br>
-        <input type="text" name="username" id="username" class="loginInput" placeholder="Username"><br>
-        <input type="password" name="pswdli" id="pswdli" class="loginInput" placeholder="Password">
-        <p id="error"></p>
-        <input type="button" value="Register" id="btnlogin" onclick="registercheck()">
+        <form action="http://localhost:36187/register/" method="POST">
+            <h2 id="welcome">WELCOME</h2>
+            <input type="text" name="email" id="email" class="loginInput" placeholder="E-Mail"><br>
+            <input type="text" name="username" id="username" class="loginInput" placeholder="Username"><br>
+            <input type="password" name="pswdli" id="pswdli" class="loginInput" placeholder="Password">
+            <p id="error"></p>
+            <input type="submit" id="btnlogin">
+        </form>
     </div>
 </body>
 </html>

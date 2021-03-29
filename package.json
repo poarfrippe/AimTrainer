@@ -22,6 +22,7 @@
   "homepage": "https://github.com/poarfrippe/AimTrainer#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "mysql": "^2.18.1",
     "three": "^0.126.1"
   },
   "devDependencies": {
