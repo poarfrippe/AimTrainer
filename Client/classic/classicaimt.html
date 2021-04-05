@@ -10,12 +10,24 @@
     <link rel='walltexture1' type="image/png" href="Tiles084_1K_Color.jpg" />
     <link rel='walltexture2' type="image/png" href="Tiles084_1K_AmbientOcclusion.jpg" />
     <link rel='walltexture3' type="image/png" href="Tiles084_1K_Normal.jpg" />
-    <link rel="font1" type="font" href="Helvetica.json">
+    <link rel="font1" type="font" href="Arial_Regular.json">
     <script src="main.js"></script>
 </head>
 <body>
+    <span class="loader"><span class="loader-inner"></span></span>
+
+    <div id="quit">
+        <a href="http://localhost:36187/">Quit</a>
+    </div>
+    
+    <h1 class="tohide" id="starttext">&nbsp;Click to start&nbsp;</h1>
+
     <div id="crosshair">
         <p>+</p>
+    </div>
+
+    <div class="tohide" id="playagain">
+        <a href="#" onclick="window.location.reload(true);">&nbsp;Play Again&nbsp;</a>
     </div>
 </body>
 </html>

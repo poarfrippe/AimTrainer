@@ -22,10 +22,13 @@ if(con){
     console.log('Cant connect to db, Check ur db connection');
 }
 
+//sparber des honi lei auskommentiert weil sünst wenn man die datenbank net hot direkt dor server obstürzt un man net probieren konn... wosche woll
+/*
 con.query("SELECT COUNT(*) AS usernameCount FROM benutzer", function (err, rows, fields){
     if(err) throw err;
     i = rows[0].usernameCount        
 });
+*/
 
 //home
 app.get('/', (req, res) =>{
@@ -169,8 +172,8 @@ app.get("/classic/Tiles084_1K_AmbientOcclusion.jpg", (req, res) => {
 app.get("/classic/Tiles084_1K_Color.jpg", (req, res) => {
     res.sendFile("Client/textures/Tiles084/Tiles084_1K_Color.jpg", {root: "./"})
 })
-app.get("/classic/Helvetica.json", (req, res) => {
-    res.sendFile("Client/fonts/Helvetica.json", {root: "./"})
+app.get("/classic/Arial_Regular.json", (req, res) => {
+    res.sendFile("Client/fonts/Arial_Regular.json", {root: "./"})
 })
 app.post("/classic", (req, res) => {
     //des no of DB

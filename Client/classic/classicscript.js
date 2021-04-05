@@ -1,4 +1,4 @@
-import * as THREE from 'C:/Users/phili/Desktop/schuale/5BT/AimTrainer/node_modules/three/src/Three.js';
+import * as THREE from '../../node_modules/three/src/Three.js';
 
 const renderer = new THREE.WebGLRenderer({antialias: true})
 const scene = new THREE.Scene();
@@ -29,10 +29,16 @@ let timeMash
 let time = 10
 
 let currentDate
-let startsec = -1
+let startsec = -1       //vor beginn
 let currentsec
 
 window.onload = function() {
+
+    document.getElementsByClassName("loader")[0].remove()
+
+    document.getElementsByClassName("tohide")[0].style.visibility = "visible";
+    document.getElementById("quit").style.visibility = "visible"
+    document.getElementById("crosshair").style.visibility = "visible"
 
     camera.position.z = 0
 
@@ -53,6 +59,13 @@ window.onload = function() {
 
 }
 
+window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+
+    camera.updateProjectionMatrix();
+})
+
 let render = function() {
 
     currentDate = new Date();
@@ -63,9 +76,10 @@ let render = function() {
 
         if (time == 0) {
             sendScore()
-            startsec = -2
+            startsec = -2           //nach ende
             camera.lookAt(0, 0, -1)
             document.exitPointerLock();
+            document.getElementsByClassName("tohide")[1].style.visibility = "visible";
         }
     }
 
@@ -100,11 +114,11 @@ function settextscore(text) {
     })
 
     let loader = new THREE.FontLoader();
-    loader.load( 'Helvetica.json', function ( font ) {
+    loader.load( /*'../fonts/Arial_Regular.json'*/ 'Arial_Regular.json', function ( font ) {
         let textgeo = new THREE.TextGeometry(text, {
             font: font,
             size: 2,
-            height: 0.01,
+            height: 0,
             curveSegments: 30,
             bevelThickness: 0.1,
 			bevelSize: 0.1,
@@ -132,11 +146,11 @@ function settime (time) {
     })
 
     let loader = new THREE.FontLoader();
-    loader.load( 'Helvetica.json', function ( font ) {
+    loader.load( /*'../fonts/Arial_Regular.json'*/ 'Arial_Regular.json', function ( font ) {
         let textgeo = new THREE.TextGeometry(time, {
             font: font,
             size: 2,
-            height: 0.5,
+            height: 0,
             curveSegments: 30,
             bevelThickness: 0.1,
 			bevelSize: 0.1,
@@ -152,6 +166,13 @@ function settime (time) {
 
         scene.add(timeMash)
     })
+}
+
+function starttimer(sekunden) {
+    currentDate = new Date();
+    startsec = currentDate.getSeconds()
+    currentsec = startsec
+    time = sekunden
 }
 
 function handleMouseMove(event) {
@@ -270,11 +291,11 @@ function drawroom(width, height, depth) {
 
     let textureloader = new THREE.TextureLoader()
 /*
-    let walltexture = new textureloader.load("textures/Tiles084/Tiles084_1K_Color.jpg")
-    let wallbumpMap = new textureloader.load("textures/Tiles084/Tiles084_1K_AmbientOcclusion.jpg")
-    let wallnormalMap = new textureloader.load("textures/Tiles084/Tiles084_1K_Normal.jpg")
+    let walltexture = new textureloader.load("../textures/Tiles084/Tiles084_1K_Color.jpg")
+    let wallbumpMap = new textureloader.load("../textures/Tiles084/Tiles084_1K_AmbientOcclusion.jpg")
+    let wallnormalMap = new textureloader.load("../textures/Tiles084/Tiles084_1K_Normal.jpg")
 */
-  
+
     let walltexture = new textureloader.load("Tiles084_1K_Color.jpg")
     let wallbumpMap = new textureloader.load("Tiles084_1K_AmbientOcclusion.jpg")
     let wallnormalMap = new textureloader.load("Tiles084_1K_Normal.jpg")
@@ -355,10 +376,9 @@ function inittargets(howmanny) {
     let geometry = new THREE.SphereGeometry(1, 100, 100)
     let material = new THREE.MeshLambertMaterial({
         color: "#FFFFFF",
-        //map: new THREE.TextureLoader().load("textures/joni.png")
+        //map: new THREE.TextureLoader().load("../textures/joni.png")
         map: new THREE.TextureLoader().load("joni.png")
-        //map: new THREE.TextureLoader().load("theo.png")
-    })
+        })
 
     for (let i = 0; i < howmanny; ++i) {
         let mesh = new THREE.Mesh(geometry, material)
@@ -386,11 +406,12 @@ function addlight() {
 
 function onMouseClick(event) {
 
-    if (startsec != -2) {
+    if ((startsec != -2 && startsec <= 0) || (document.pointerLockElement != document.body && startsec >= 0)) {             //wenn man waehrendn spiel ausi tabt don muas man irgendwia 2 mol oder so klicken dassman weiter spielen konn, keine ahnung wiso...
         document.body.requestPointerLock()
+        document.getElementsByClassName("tohide")[0].style.visibility = "hidden";
     }
     
-    event.preventDefault();
+    //event.preventDefault();
 
     if (startsec == -1) {
         starttimer(time)
@@ -424,11 +445,4 @@ function getcordsontargethight(target) {
     let newy = (camy/camz) * target.z
 
     return new THREE.Vector3(newx, newy, target.z)
-}
-
-function starttimer(sekunden) {
-    currentDate = new Date();
-    startsec = currentDate.getSeconds()
-    currentsec = startsec
-    time = sekunden
 }

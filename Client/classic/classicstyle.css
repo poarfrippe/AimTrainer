@@ -1,6 +1,7 @@
 body {
     margin: 0;
-    height: 100vh;
+    height: 100%;
+    text-align: center;
 }
 
 canvas { 
@@ -10,11 +11,141 @@ canvas {
 
 #crosshair {
     font-size: 50px;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    position: fixed;
-    align-items: center;
-    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: aqua;
+    visibility: hidden;
+}
+
+#starttext {
+    font-size: 80px;
+    font-family:helvetica;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -35%);
+    color: rgb(255, 255, 255);
+    background-color: black;
+    visibility: hidden;
+}
+
+#quit {
+    font-size: 50px;
+    font-family:helvetica;
+    position: absolute;
+    width: 100%;
+    text-align: right;
+    visibility: hidden;
+}
+
+#quit a {
+    font-weight: bold;
+    text-decoration: none;
+    color: red;
+    margin-right: 1%;
+}
+
+#quit a:hover {
+    color: rgb(255, 142, 142);
+}
+
+#playagain {
+    font-size: 100px;
+    font-family:helvetica;
+    position: absolute;
+    top: 40%;
+    width: 100%;
+    text-align: center;
+    transform: translate(-0%, -40%);
+    visibility: hidden;
+}
+
+#playagain a {
+    font-weight: bold;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color:black;
+}
+
+#playagain a:hover {
+    color: rgb(151, 151, 151);
+}
+
+
+
+
+
+/*for loading screen */
+
+body, html {
+    height: 100%;
+    text-align: center;
+}
+
+body {
+  background-color: #242F3F;
+}
+
+.loader {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  border: 4px solid #Fff;
+  top: 50%;
+  animation: loader 2s infinite ease;
+}
+
+.loader-inner {
+  vertical-align: top;
+  display: inline-block;
+  width: 100%;
+  background-color: #fff;
+  animation: loader-inner 2s infinite ease-in;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  
+  25% {
+    transform: rotate(180deg);
+  }
+  
+  50% {
+    transform: rotate(180deg);
+  }
+  
+  75% {
+    transform: rotate(360deg);
+  }
+  
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-inner {
+  0% {
+    height: 0%;
+  }
+  
+  25% {
+    height: 0%;
+  }
+  
+  50% {
+    height: 100%;
+  }
+  
+  75% {
+    height: 100%;
+  }
+  
+  100% {
+    height: 0%;
+  }
 }
