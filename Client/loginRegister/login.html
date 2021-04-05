@@ -6,11 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="loginregister.css">
-    <script type="module" src="script.js"></script>
 </head>
 <body>
     <div id="divlogin">
-        <form action="http://localhost:36187/login" method="POST">
+        <form method="POST" id="loginform">
             <h2 id="welcome">WELCOME</h2>
             <input type="text" name="username" id="username" class="loginInput" placeholder="Username"><br>
             <input type="password" name="pswdli" id="pswdli" class="loginInput" placeholder="Password">
@@ -18,7 +17,38 @@
             <input id="btnlogin" type="submit">
             <p id="plogin">No Account, no problem! <a id="alogin" href="http://localhost:36187/register/">Register</a></p>
         </form>
-        
     </div>
+        
+
+        <script>
+
+            //funkt no net richtig...
+
+            let loginform = document.getElementById("loginform")
+
+            loginform.addEventListener("submit", function(event) {
+                event.preventDefault()
+
+                let formdata = new FormData(loginform)
+                let searchparams = new URLSearchParams()
+
+                for(const pair of formdata) {
+                    searchparams.append(pair[0], pair[1])
+                }
+
+                fetch("http://localhost:36187/login", {
+                    method: loginform.method,
+                    body: searchparams              //Content-Type wird automatisch auf formdata/searchparams
+                }).then(function (response) {       //tuat unmeglich bled
+                    if (response.status == 302) {
+                        console.log(redirecten)
+                    } else if (response.status == 404) {
+                        console.log("not found")
+                    }
+                }).catch(function (error) {
+                    console.error(error)
+                })
+            })
+        </script>
 </body>
 </html>
