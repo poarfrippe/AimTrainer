@@ -17,6 +17,7 @@ canvas {
     transform: translate(-50%, -50%);
     color: aqua;
     visibility: hidden;
+    user-select: none;
 }
 
 #starttext {

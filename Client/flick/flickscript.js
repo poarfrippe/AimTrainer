@@ -26,6 +26,7 @@ let numberNotTargetElements = 15
 
 let scoreMash
 let score = 0
+let clickstotal = 0
 let timeMash
 let time = 30
 
@@ -111,10 +112,10 @@ let render = function() {
 function sendScore() {
 
     //funkt no net
-    fetch("http://localhost:36187/classic", {
+    fetch("http://localhost:36187/flick", {
         method: "post",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({'score': score})
+        body: JSON.stringify({'score': score, 'clicks': clickstotal, /*'username': username*/})
     }).then(function (response) {
         return response.text()
     }).then(function (text){
@@ -446,23 +447,27 @@ function onMouseClick(event) {
         starttimer(time)
     }
 
-    let newcords = new THREE.Vector3(0, 0, 0)
-    for(let i = 0; i < scene.children.length; ++i) {
-        if(scene.children[i].type == "Mesh") {
-            if (scene.children[i].geometry.type == "SphereGeometry") {
-                newcords = getcordsontargethight(scene.children[i].position.z)
-                if ((newcords.x < scene.children[i].position.x+TARGETSIZE && newcords.x > scene.children[i].position.x-TARGETSIZE) && 
-                    (newcords.y < scene.children[i].position.y+TARGETSIZE && newcords.y > scene.children[i].position.y-TARGETSIZE)) {
-                        if (startsec > 0) {
-                            scene.remove(scene.children[i])
-                            ++score
-                            document.getElementById("flicktext").style.visibility = "visible"
-                            settextscore("Score: " + score)
-                        }
+    if (document.pointerLockElement == document.body) {
+        ++clickstotal
+        let newcords = new THREE.Vector3(0, 0, 0)
+        for(let i = 0; i < scene.children.length; ++i) {
+            if(scene.children[i].type == "Mesh") {
+                if (scene.children[i].geometry.type == "SphereGeometry") {
+                    newcords = getcordsontargethight(scene.children[i].position.z)
+                    if ((newcords.x < scene.children[i].position.x+TARGETSIZE && newcords.x > scene.children[i].position.x-TARGETSIZE) && 
+                        (newcords.y < scene.children[i].position.y+TARGETSIZE && newcords.y > scene.children[i].position.y-TARGETSIZE)) {
+                            if (startsec > 0) {
+                                scene.remove(scene.children[i])
+                                ++score
+                                document.getElementById("flicktext").style.visibility = "visible"
+                                settextscore("Score: " + score)
+                            }
+                    }
                 }
             }
         }
     }
+    
 
 }
 

@@ -26,6 +26,7 @@ const numberNotTargetElements = 11
 
 let scoreMash
 let score = 0
+let clickstotal = 0
 let timeMash
 let time = 30
 
@@ -97,7 +98,7 @@ function sendScore() {
     fetch("http://localhost:36187/classic", {
         method: "post",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({'score': score})
+        body: JSON.stringify({'score': score, 'clicks': clickstotal, /*'username': username*/})
     }).then(function (response) {
         return response.text()
     }).then(function (text){
@@ -106,7 +107,8 @@ function sendScore() {
         console.log(error)
     })
 
-    console.log("iatz war zu senden an backend Score: " + score)
+    console.log("totalclicks: " + clickstotal)
+
 }
 
 function settextscore(text) {
@@ -421,27 +423,30 @@ function onMouseClick(event) {
         starttimer(time)
     }
 
-    let newcords = new THREE.Vector3(0, 0, 0)
-    for(let i = 0; i < scene.children.length; ++i) {
-        if(scene.children[i].type == "Mesh") {
-            if (scene.children[i].geometry.type == "SphereGeometry") {
-                newcords = getcordsontargethight(scene.children[i].position)
-                if ((newcords.x < scene.children[i].position.x+TARGETSIZE && newcords.x > scene.children[i].position.x-TARGETSIZE) && 
-                    (newcords.y < scene.children[i].position.y+TARGETSIZE && newcords.y > scene.children[i].position.y-TARGETSIZE)) {
-                        if (startsec > 0) {
-                            ++score
-                            settextscore("Score: " + score)
-                            scene.remove(scene.children[i])
-                        }
+    if (document.pointerLockElement == document.body) {
+        ++clickstotal
+        let newcords = new THREE.Vector3(0, 0, 0)
+        for(let i = 0; i < scene.children.length; ++i) {
+            if(scene.children[i].type == "Mesh") {
+                if (scene.children[i].geometry.type == "SphereGeometry") {
+                    newcords = getcordsontargethight(scene.children[i].position)
+                    if ((newcords.x < scene.children[i].position.x+TARGETSIZE && newcords.x > scene.children[i].position.x-TARGETSIZE) && 
+                        (newcords.y < scene.children[i].position.y+TARGETSIZE && newcords.y > scene.children[i].position.y-TARGETSIZE)) {
+                            if (startsec > 0) {
+                                ++score
+                                settextscore("Score: " + score)
+                                scene.remove(scene.children[i])
+                            }
+                    }
                 }
             }
         }
-    }
 
-    if (scene.children.length < numberNotTargetElements) {
-        inittargets(1)
+        if (scene.children.length < numberNotTargetElements) {
+            inittargets(1)
+        }
     }
-
+    
 }
 
 function getcordsontargethight(target) {
