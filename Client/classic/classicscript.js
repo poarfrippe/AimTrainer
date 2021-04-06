@@ -34,8 +34,8 @@ let currentDate
 let startsec = -1       //vor beginn
 let currentsec
 
-//const font = '../fonts/Arial_Regular.json' 
-const font = 'Arial_Regular.json'
+const font = '../fonts/Arial_Regular.json' 
+//const font = 'Arial_Regular.json'
 
 window.onload = function() {
 
@@ -106,8 +106,6 @@ function sendScore() {
     }).catch(function (error) {
         console.log(error)
     })
-
-    console.log("totalclicks: " + clickstotal)
 
 }
 
@@ -296,16 +294,16 @@ function drawroom(width, height, depth) {
 */
 
     let textureloader = new THREE.TextureLoader()
-/*
+
     let walltexture = new textureloader.load("../textures/Tiles084/Tiles084_1K_Color.jpg")
     let wallbumpMap = new textureloader.load("../textures/Tiles084/Tiles084_1K_AmbientOcclusion.jpg")
     let wallnormalMap = new textureloader.load("../textures/Tiles084/Tiles084_1K_Normal.jpg")
-*/
 
+/*
     let walltexture = new textureloader.load("Tiles084_1K_Color.jpg")
     let wallbumpMap = new textureloader.load("Tiles084_1K_AmbientOcclusion.jpg")
     let wallnormalMap = new textureloader.load("Tiles084_1K_Normal.jpg")
-
+*/
 
     let material = new THREE.MeshPhongMaterial({
         //color: 0x7dc0ff,
@@ -382,8 +380,8 @@ function inittargets(howmanny) {
     let geometry = new THREE.SphereGeometry(TARGETSIZE, 100, 100)
     let material = new THREE.MeshLambertMaterial({
         color: "#FFFFFF",
-        //map: new THREE.TextureLoader().load("../textures/joni.png")
-        map: new THREE.TextureLoader().load("joni.png")
+        map: new THREE.TextureLoader().load("../textures/joni.png")
+        //map: new THREE.TextureLoader().load("joni.png")
         })
 
     for (let i = 0; i < howmanny; ++i) {

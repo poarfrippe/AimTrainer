@@ -123,8 +123,6 @@ function sendScore() {
     }).catch(function (error) {
         console.log(error)
     })
-
-    console.log("iatz war zu senden an backend Score: " + score)
 }
 
 function settextscore(text) {
