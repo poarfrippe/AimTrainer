@@ -176,21 +176,23 @@ app.get("/classic/Arial_Regular.json", (req, res) => {
     res.sendFile("Client/fonts/Arial_Regular.json", {root: "./"})
 })
 app.post("/classic", (req, res) => {
-    //des no of DB
-    console.log("hallo, bin im post iatz")
-    console.log("score wos in die datenbank zu seppln muas: " + req.body.score)
-    let score = req.body.score
-    let anschlaegeProSekunde = score /10
-    let username = "Azir Bot" //req.body.username
-    let spielid = 1
+   //des no of DB
+   console.log("hallo, bin im post iatz von classic")
+   console.log("score wos in die datenbank zu seppln muas: " + req.body.score)
+   let score = req.body.score
+   let klicks = req.body.klicks 
+   let anschlaegeProSekunde = klicks /30
+   let accuracy = score/klicks * 100
+   let username = "Azir Bot" //req.body.username
+   let spielid = 1
 
-    let sql = "INSERT INTO spielmodi (`anschlaege`, `anschlaegeProSekunde`, `trefferquote`, `spielid`, `zeit`, `username`) VALUES ('"+score+"', '"+anschlaegeProSekunde+"', '100', '"+spielid+"', '00:00:10', '"+username+"' )";
-    con.query(sql, function (err, result){
-        if (err) throw err;
-        console.log("1 record inserted")
-    })
+   let sql = "INSERT INTO spielmodi (`anschlaege`, `anschlaegeProSekunde`, `trefferquote`, `spielid`, `zeit`, `username`) VALUES ('"+klicks+"', '"+anschlaegeProSekunde+"', '"+accuracy+"', '"+spielid+"', '00:00:10', '"+username+"' )";
+   con.query(sql, function (err, result){
+       if (err) throw err;
+       console.log("1 record inserted")
+   })
 
-    res.send("hoi, hon gekreag, jo!!!")
+   res.send("hoi, hon gekreag, jo!!!")
 })
 
 
@@ -220,21 +222,23 @@ app.get("/flick/Arial_Regular.json", (req, res) => {
     res.sendFile("Client/fonts/Arial_Regular.json", {root: "./"})
 })
 app.post("/flick", (req, res) => {
-    //des no of DB
-    console.log("hallo, bin im post iatz")
-    console.log("score wos in die datenbank zu seppln muas: " + req.body.score)
-    let score = req.body.score
-    let anschlaegeProSekunde = score /10
-    let username = "Azir Bot" //req.body.username
-    let spielid = 1
+   //des no of DB
+   console.log("hallo, bin im post iatz von flick")
+   console.log("score wos in die datenbank zu seppln muas: " + req.body.score)
+   let score = req.body.score
+   let klicks = 40 //req.body.klicks
+   let anschlaegeProSekunde = klicks /30
+   let accuracy = score/klicks * 100
+   let username = "Azir Bot" //req.body.username
+   let spielid = 2
 
-    let sql = "INSERT INTO spielmodi (`anschlaege`, `anschlaegeProSekunde`, `trefferquote`, `spielid`, `zeit`, `username`) VALUES ('"+score+"', '"+anschlaegeProSekunde+"', '100', '"+spielid+"', '00:00:10', '"+username+"' )";
-    con.query(sql, function (err, result){
-        if (err) throw err;
-        console.log("1 record inserted")
-    })
+   let sql = "INSERT INTO flick (`anschlaege`, `anschlaegeProSekunde`, `trefferquote`, `spielid`, `zeit`, `username`) VALUES ('"+klicks+"', '"+anschlaegeProSekunde+"', '"+accuracy+"', '"+spielid+"', '00:00:30', '"+username+"' )";
+   con.query(sql, function (err, result){
+       if (err) throw err;
+       console.log("1 record inserted")
+   })
 
-    res.send("hoi, hon gekreag, jo!!!")
+   res.send("hoi, hon gekreag, jo!!!")
 })
 
 app.listen(port, () => {
