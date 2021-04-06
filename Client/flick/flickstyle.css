@@ -77,7 +77,16 @@ canvas {
     color: rgb(151, 151, 151);
 }
 
-
+#flicktext {
+  font-size: 30px;
+  font-family:helvetica;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  color: rgb(255, 208, 0);
+  visibility: hidden;
+}
 
 
 

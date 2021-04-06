@@ -10,7 +10,7 @@ let camz = 0
 let anglex = 0
 let angley = 0
 
-const roomwidth = 50
+const roomwidth = 80
 const roomheight = 40
 const roomdepth = 40
 const roomhintercam = 20
@@ -22,7 +22,7 @@ const wholeround = 2*Math.PI
 const sensiy = 1.2
 const sensix = 1.2
 
-const numberNotTargetElements = 11
+let numberNotTargetElements = 15
 
 let scoreMash
 let score = 0
@@ -55,6 +55,23 @@ window.onload = function() {
     settime("" +time)
     inittargets(1)
     addlight()
+
+    let points = [];
+    points.push( new THREE.Vector3( -5, 5, -roomdepth ) );
+    points.push( new THREE.Vector3( 5, 5, -roomdepth ) );
+    drawline(points)
+    points = [];
+    points.push( new THREE.Vector3( -5, -5, -roomdepth ) );
+    points.push( new THREE.Vector3( 5, -5, -roomdepth ) );
+    drawline(points)
+    points = [];
+    points.push( new THREE.Vector3( -5, -5, -roomdepth ) );
+    points.push( new THREE.Vector3( -5, 5, -roomdepth ) );
+    drawline(points)
+    points = [];
+    points.push( new THREE.Vector3( 5, -5, -roomdepth ) );
+    points.push( new THREE.Vector3( 5, 5, -roomdepth ) );
+    drawline(points)
     
     document.body.onclick = onMouseClick
     document.onmousemove = handleMouseMove;
@@ -183,6 +200,14 @@ function handleMouseMove(event) {
 
     if(document.pointerLockElement == document.body && startsec > 0) {
         
+        if (scene.children.length < numberNotTargetElements) {
+            let cordsatwall = getcordsontargethight()
+            if(cordsatwall.x < 5 && cordsatwall.x > -5 && cordsatwall.y < 5 && cordsatwall.y > -5) {
+                inittargets(1)
+                document.getElementById("flicktext").style.visibility = "hidden"
+            }
+        }
+
         let obweiter = true
         if ((camy > 0.999 && event.movementY > 0) || (camy < -0.999 && event.movementY < 0)){       //tuat irgendwia volle komisch, ober weirt schun sein...
             obweiter = false
@@ -368,10 +393,10 @@ function drawroom(width, height, depth) {
 function drawline(points) {
     const material = new THREE.LineBasicMaterial( { 
         //color: 0x7D00FF
-        color: 0x000000
+        color: 0xFFFFFF
     } );
     const geometry = new THREE.BufferGeometry().setFromPoints( points );
-    const line = new THREE.Line( geometry, material );
+    let line = new THREE.Line( geometry, material );
     scene.add( line );
 }
 
@@ -425,28 +450,25 @@ function onMouseClick(event) {
     for(let i = 0; i < scene.children.length; ++i) {
         if(scene.children[i].type == "Mesh") {
             if (scene.children[i].geometry.type == "SphereGeometry") {
-                newcords = getcordsontargethight(scene.children[i].position)
+                newcords = getcordsontargethight(scene.children[i].position.z)
                 if ((newcords.x < scene.children[i].position.x+TARGETSIZE && newcords.x > scene.children[i].position.x-TARGETSIZE) && 
                     (newcords.y < scene.children[i].position.y+TARGETSIZE && newcords.y > scene.children[i].position.y-TARGETSIZE)) {
                         if (startsec > 0) {
-                            ++score
-                            settextscore("Score: " + score)
                             scene.remove(scene.children[i])
+                            ++score
+                            document.getElementById("flicktext").style.visibility = "visible"
+                            settextscore("Score: " + score)
                         }
                 }
             }
         }
     }
 
-    if (scene.children.length < numberNotTargetElements) {
-        inittargets(1)
-    }
-
 }
 
-function getcordsontargethight(target) {
-    let newx = (camx/camz) * -target.z
-    let newy = (camy/camz) * target.z
+function getcordsontargethight(zcord = -roomdepth) {
+    let newx = (camx/camz) * -zcord
+    let newy = (camy/camz) * zcord
 
-    return new THREE.Vector3(newx, newy, target.z)
+    return new THREE.Vector3(newx, newy, zcord)
 }

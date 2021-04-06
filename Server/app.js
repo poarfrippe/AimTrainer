@@ -157,8 +157,8 @@ app.get("/classic", (req, res) => {
 app.get("/classic/classicstyle.css", (req, res) => {
     res.sendFile("Client/classic/classicstyle.css", {root: "./"})
 })
-app.get("/classic/main.js", (req, res) => {
-    res.sendFile("dist/main.js", {root: "./"})
+app.get("/classic/classicwebpack.js", (req, res) => {
+    res.sendFile("dist/classicwebpack.js", {root: "./"})
 })
 app.get("/classic/joni.png", (req, res) => {
     res.sendFile("Client/textures/joni.png", {root: "./"})
@@ -193,6 +193,49 @@ app.post("/classic", (req, res) => {
     res.send("hoi, hon gekreag, jo!!!")
 })
 
+
+//flick
+app.get("/flick", (req, res) => {
+    res.sendFile("Client/flick/flick.html", {root: "./"})
+})
+app.get("/flick/flickstyle.css", (req, res) => {
+    res.sendFile("Client/flick/flickstyle.css", {root: "./"})
+})
+app.get("/flick/flickwebpack.js", (req, res) => {
+    res.sendFile("dist/flickwebpack.js", {root: "./"})
+})
+app.get("/flick/joni.png", (req, res) => {
+    res.sendFile("Client/textures/joni.png", {root: "./"})
+})
+app.get("/flick/Tiles084_1K_Normal.jpg", (req, res) => {
+    res.sendFile("Client/textures/Tiles084/Tiles084_1K_Normal.jpg", {root: "./"})
+})
+app.get("/flick/Tiles084_1K_AmbientOcclusion.jpg", (req, res) => {
+    res.sendFile("Client/textures/Tiles084/Tiles084_1K_AmbientOcclusion.jpg", {root: "./"})
+})
+app.get("/flick/Tiles084_1K_Color.jpg", (req, res) => {
+    res.sendFile("Client/textures/Tiles084/Tiles084_1K_Color.jpg", {root: "./"})
+})
+app.get("/flick/Arial_Regular.json", (req, res) => {
+    res.sendFile("Client/fonts/Arial_Regular.json", {root: "./"})
+})
+app.post("/flick", (req, res) => {
+    //des no of DB
+    console.log("hallo, bin im post iatz")
+    console.log("score wos in die datenbank zu seppln muas: " + req.body.score)
+    let score = req.body.score
+    let anschlaegeProSekunde = score /10
+    let username = "Azir Bot" //req.body.username
+    let spielid = 1
+
+    let sql = "INSERT INTO spielmodi (`anschlaege`, `anschlaegeProSekunde`, `trefferquote`, `spielid`, `zeit`, `username`) VALUES ('"+score+"', '"+anschlaegeProSekunde+"', '100', '"+spielid+"', '00:00:10', '"+username+"' )";
+    con.query(sql, function (err, result){
+        if (err) throw err;
+        console.log("1 record inserted")
+    })
+
+    res.send("hoi, hon gekreag, jo!!!")
+})
 
 app.listen(port, () => {
     console.log("Server running on: http://" + ip + ":" + port)
