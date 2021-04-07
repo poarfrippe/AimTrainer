@@ -1,0 +1,56 @@
+body {
+    margin: 8;
+    background-image: url("background.jpg");
+}
+
+header{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-left: 10%;
+   margin-right: 10%;
+}
+
+header img {
+    height: 5%;
+    width: 5%;
+}
+
+header h1 {
+    font-size:48px;
+    color: white;
+}
+
+.selectdiv{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.selectdiv a {
+    height: 10%;
+    width: 10%;
+    background-color: #336699;
+    display: inline-block;
+    text-align: center;
+    padding: 15px 32px;
+    font-size: 20px;
+    border-radius: 8px;
+    border: 2px solid;
+    border-color: black;
+    color: black;
+    text-decoration: none;
+}
+
+.selectdiv a:hover{
+    background-color:#0099cc;
+}
+
+*{
+    font-family: Poppins, sans-serif;
+    padding: 0;
+    margin: 4;
+}
+
+#login img{
+    border-radius: 50%;
+}
