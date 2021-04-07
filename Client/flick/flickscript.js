@@ -29,6 +29,7 @@ let score = 0
 let clickstotal = 0
 let timeMash
 let time = 30
+const username = localStorage.getItem('username')
 
 let currentDate
 let startsec = -1       //vor beginn
@@ -112,10 +113,10 @@ let render = function() {
 function sendScore() {
 
     //funkt no net
-    fetch("http://localhost:36187/flick", {
+    fetch("http://89.107.108.231:18781/flick", {
         method: "post",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({'score': score, 'clicks': clickstotal, /*'username': username*/})
+        body: JSON.stringify({'score': score, 'clicks': clickstotal, 'username': username})
     }).then(function (response) {
         return response.text()
     }).then(function (text){
@@ -123,6 +124,9 @@ function sendScore() {
     }).catch(function (error) {
         console.log(error)
     })
+
+    console.log("sending as Username: " + username)
+
 }
 
 function settextscore(text) {
